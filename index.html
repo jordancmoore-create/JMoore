@@ -10,6 +10,9 @@
   <meta name="theme-color" content="#7ba0c4" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
+  <!-- Preload the hero photo — it's the largest paint on the page, so fetch it early. -->
+  <link rel="preload" as="image" href="/images/jordan.jpg" fetchpriority="high" />
+
   <!-- Link previews (when the URL is shared) -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Jordan Moore" />
