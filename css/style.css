@@ -1,161 +1,101 @@
 /* ============================================================
    jmoore.net — personal site
-   Minimalist, photo-first. Warm sand canvas, muted forest-green
-   accent. Fraunces (name) + Inter (small text). Light by default,
-   dark via prefers-color-scheme.
+   The photo IS the page: full-bleed background, soft edge fade,
+   and frosted contact pills up in the top-right sky. No title.
+   Pure CSS, no web fonts, no JS.
    ============================================================ */
 
 :root {
-  --bg: #f4f1e9;          /* warm sand */
-  --bg-elev: #fbfaf6;
-  --text: #23281f;        /* deep forest ink */
-  --muted: #6d7266;       /* sage-gray */
-  --line: rgba(35, 40, 31, 0.14);
-  --accent: #5c7a52;      /* muted forest green */
-  --accent-strong: #47603f;
-
-  --radius: 16px;
-  --maxw: 520px;
-  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
-  --font-body: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #14170f;        /* deep olive-charcoal */
-    --bg-elev: #1b1f16;
-    --text: #ece9dd;      /* warm bone */
-    --muted: #9aa08c;
-    --line: rgba(255, 255, 255, 0.12);
-    --accent: #9bb884;    /* soft sage for dark bg */
-    --accent-strong: #b3cd9c;
-  }
+  --text: #f4f1e9;                 /* warm white, for the pills */
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
+
+html, body { height: 100%; }
 
 body {
   margin: 0;
   min-height: 100vh;
   min-height: 100dvh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2.5rem 1.25rem;
+  overflow: hidden;                /* full screen, no scroll */
+  background: #8fb0c9;             /* sky tone shown before the photo loads */
   font-family: var(--font-body);
   color: var(--text);
-  background:
-    radial-gradient(70rem 48rem at 50% -18%,
-      color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%),
-    var(--bg);
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
 }
 
-/* ---------- Centered stage ---------- */
-.stage {
-  display: grid;
-  justify-items: center;
-  text-align: center;
-  gap: 1.35rem;
-  width: 100%;
-  max-width: var(--maxw);
+/* ---------- Full-bleed photo ---------- */
+.bg {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  object-fit: cover;
+  /* Keeps Jordan framed: 1st value = horizontal, 2nd = vertical.
+     Nudge these if you want him higher/lower or more to one side. */
+  object-position: 40% 35%;
+  z-index: 0;
+  animation: fade-in 1s ease both;
 }
 
-/* ---------- Portrait (the centerpiece) ---------- */
-.portrait {
-  margin: 0;
-  display: flex;
-  justify-content: center;
-}
-.portrait img {
-  width: auto;
-  height: auto;
-  max-width: min(86vw, 380px);
-  max-height: 68vh;
-  border-radius: var(--radius);
-  border: 1px solid var(--line);
-  background: var(--bg-elev);
-  box-shadow:
-    0 24px 50px -26px rgba(20, 23, 15, 0.55),
-    0 8px 18px -12px rgba(20, 23, 15, 0.40);
-  display: block;
+/* ---------- Soft edge fade / vignette ---------- */
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(12, 16, 10, 0.22), rgba(12, 16, 10, 0) 20%),
+    radial-gradient(135% 105% at 50% 40%,
+      rgba(12, 16, 10, 0) 55%, rgba(12, 16, 10, 0.32) 100%);
 }
 
-/* ---------- Name + accent rule ---------- */
-.name {
-  margin: 0;
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(2rem, 7vw, 3rem);
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-.rule {
-  width: 52px;
-  height: 3px;
-  border-radius: 2px;
-  background: var(--accent);
-}
-.tagline {
-  margin: -0.4rem 0 0;
-  max-width: 34ch;
-  color: var(--muted);
-  font-size: 1.02rem;
-}
-
-/* ---------- Links ---------- */
+/* ---------- Contact pills, top-right ---------- */
 .links {
+  position: fixed;
+  z-index: 2;
+  top: calc(env(safe-area-inset-top, 0px) + 1rem);
+  right: calc(env(safe-area-inset-right, 0px) + 1rem);
   display: flex;
-  gap: 1.6rem;
-  align-items: center;
+  gap: 0.6rem;
+  animation: drop-in 0.6s ease 0.25s both;
 }
-.links a {
+
+.pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  color: var(--muted);
+  gap: 0.45rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(16, 20, 12, 0.36);
+  color: var(--text);
   text-decoration: none;
-  font-size: 0.98rem;
+  font-size: 0.9rem;
   font-weight: 500;
-  transition: color 0.18s ease;
+  line-height: 1;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  -webkit-backdrop-filter: blur(9px) saturate(120%);
+  backdrop-filter: blur(9px) saturate(120%);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.20);
+  transition: background 0.18s ease, transform 0.18s ease, border-color 0.18s ease;
 }
-.links a:hover { color: var(--accent-strong); }
-.links a:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 4px;
-  border-radius: 6px;
+.pill:hover {
+  background: rgba(16, 20, 12, 0.52);
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.40);
 }
-.links .ico { width: 19px; height: 19px; fill: currentColor; }
+.pill:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+.pill .ico { width: 17px; height: 17px; fill: currentColor; }
 
-/* ---------- Footer ---------- */
-.foot {
-  position: fixed;
-  bottom: 1rem;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-size: 0.8rem;
-  color: var(--muted);
-}
-
-/* ---------- Entrance motion ---------- */
-.stage > * { opacity: 0; transform: translateY(12px); }
-body.is-loaded .stage > * {
-  opacity: 1;
-  transform: none;
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-body.is-loaded .portrait { transition-delay: 0.04s; }
-body.is-loaded .name     { transition-delay: 0.18s; }
-body.is-loaded .rule     { transition-delay: 0.26s; }
-body.is-loaded .tagline  { transition-delay: 0.30s; }
-body.is-loaded .links    { transition-delay: 0.36s; }
-
-.foot { opacity: 0; }
-body.is-loaded .foot { opacity: 0.7; transition: opacity 0.8s ease 0.5s; }
+/* ---------- Motion ---------- */
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes drop-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .stage > *, .foot { opacity: 1 !important; transform: none !important; }
-  * { transition: none !important; }
+  .bg, .links { animation: none; }
 }

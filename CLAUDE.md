@@ -30,37 +30,34 @@ branch `main`, empty build command.
    repo root, build command empty. (Or first-deploy manually: `npx wrangler deploy`.)
 4. **Custom domain** — attach `jmoore.net` (+ optional `www`) to the Worker. Zone is already
    on the account.
-5. **hello@jmoore.net** — user is setting up Cloudflare Email Routing (forward to Gmail).
-   Once verified, switch the site's `mailto:` from the Gmail address to hello@jmoore.net.
+5. **hello@jmoore.net** — DONE. Cloudflare Email Routing forwards to Gmail; the site's
+   `mailto:` uses hello@jmoore.net.
 
 ## Design system
 
-```css
---bg:#f4f1e9          /* warm sand (light, default) */
---text:#23281f        /* deep forest ink */
---muted:#6d7266       /* sage-gray */
---accent:#5c7a52      /* muted forest green — chosen to complement the photo */
-/* dark theme via prefers-color-scheme: #14170f bg, #ece9dd text, #9bb884 accent */
-```
+**The photo is the whole page.** Full-bleed `<img class="bg">` (`object-fit:cover`,
+`object-position:40% 35%` — tune to reframe Jordan), a soft vignette/edge fade over it,
+and two frosted-glass contact pills (Email · GitHub) fixed in the top-right sky. No title,
+no body text (user's call, July 2026). Pure CSS: system font stack, no web fonts, no JS.
+CSS-only entrance animation (`fade-in` photo, `drop-in` pills; respects
+`prefers-reduced-motion`). Pills: `rgba(16,20,12,.36)` + `backdrop-filter: blur` + warm-white
+text, legible over the bright sky.
 
-Earth-tone / green palette (the user's preference; also matches the photo — green pullover,
-grass, coast). Fonts: **Fraunces** (display — the name) + **Inter** (small text). Light by
-default with a `prefers-color-scheme: dark` override. Entrance fade via `body.is-loaded`
-(respects `prefers-reduced-motion`).
+Earlier iteration (in git history) was a centered card with the name in Fraunces + an
+earth-tone/green palette; replaced when the user asked for the full-bleed photo look.
 
 ## File structure
 
 ```
-index.html         single centered stage: photo + name + accent rule + Email/GitHub links
-css/style.css      all styles
-js/main.js         footer year + entrance-animation toggle
-images/jordan.jpg  the portrait (the site's focal point)
+index.html         full-bleed photo + top-right Email/GitHub pills (no title, no JS)
+css/style.css      all styles (full-bleed bg, vignette, frosted pills)
+images/jordan.jpg  the portrait — the entire page
 favicon.svg        JM monogram favicon (green gradient)
 ```
 
 ## Ideas / roadmap (user is still deciding direction — keep it minimal for now)
 
-- A short personal one-liner under the name (commented `.tagline` in index.html).
+- A short personal one-liner (would need a text element added back over the photo).
 - Later, maybe: a /now page, a links hub, a photo/travel gallery, a light blog.
   Kept intentionally empty for now per the user.
 - OG share image at `images/og.png` (1200×630), then point `og:image` at it.
