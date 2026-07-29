@@ -20,10 +20,11 @@ preview URL alive. The Worker name must stay `jmoore` (matches the name Cloudfla
 from the `JMoore` repo) or git builds break. `.assetsignore` keeps CLAUDE.md, config,
 `.wrangler/`, and `*.HEIC` out of the served site.
 
-**The first deploy was manual** via `npx wrangler deploy`, run from a git-export in the
+**The first deploys were manual** via `npx wrangler deploy`, run from a git-export in the
 scratchpad because Controlled Folder Access blocks node/wrangler from writing inside
-`Documents` (see local dev notes for the recipe). **Push-to-deploy (Workers Builds) is not
-yet connected** — that's the last step to match the racing sites (see Status).
+`Documents` (see local dev notes for the recipe). **Push-to-deploy (Workers Builds) is now
+connected** (July 29 2026) and verified: a push to `main` auto-ran `wrangler deploy` and
+deployed version `97ff4f89` ~30s later. Fully matches the racing sites now.
 
 GitHub repo: **`jordancmoore-create/JMoore`** (https://github.com/jordancmoore-create/JMoore),
 branch `main`, empty build command.
@@ -35,10 +36,11 @@ branch `main`, empty build command.
 2. **GitHub repo** — created; remote wired; initial push done from this machine.
 3. **Custom domain** — DONE. `jmoore.net` (apex) attached via wrangler.jsonc `routes`.
    `www.jmoore.net` NOT set up (optional: add as a second `custom_domain` route).
-4. **Workers Builds (push-to-deploy)** — TODO (user, dashboard). Worker `jmoore` already
-   exists, so: Worker → Settings → Builds → Connect Git → `jordancmoore-create/JMoore`,
-   branch `main`, build command empty. Until then, redeploy with the scratchpad
-   `git archive` → `wrangler deploy` recipe in local dev notes.
+4. **Workers Builds (push-to-deploy)** — DONE (July 29 2026). Repo connected via the
+   Cloudflare GitHub App; push to `main` → auto-deploy (verified). Manual redeploy still
+   possible with the scratchpad `git archive` → `wrangler deploy` recipe in local dev notes.
+   To make the repo appear in the connect dropdown: GitHub → Settings → Applications →
+   Installed GitHub Apps → Cloudflare Workers and Pages → Configure → add repo access.
 5. **hello@jmoore.net** — DONE. Cloudflare Email Routing forwards to Gmail; the site's
    `mailto:` uses hello@jmoore.net.
 
