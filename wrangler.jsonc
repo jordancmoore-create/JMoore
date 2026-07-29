@@ -8,5 +8,10 @@
   // Assets-only Worker: no "main" script, just serve the static files in this folder.
   "assets": {
     "directory": "./"
-  }
+  },
+  // Custom domain: attaches jmoore.net to this Worker (the zone is on the same
+  // Cloudflare account). Wrangler provisions the DNS record + TLS cert on deploy.
+  "routes": [
+    { "pattern": "jmoore.net", "custom_domain": true }
+  ]
 }

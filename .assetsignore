@@ -4,3 +4,6 @@ wrangler.jsonc
 .gitignore
 .gitattributes
 .claude/
+.wrangler/
+*.HEIC
+*.heic
