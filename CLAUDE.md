@@ -12,11 +12,18 @@ id 0be87ab1fbd42baf0061a20e50f458ee).
 
 ## Deployment
 
-Assets-only static site, no build step. Cloudflare Worker **jmoore**. Intended flow,
-identical to the other sites: **push to `main` → Workers Builds runs `npx wrangler deploy`
-→ live in about a minute.** The Worker name in `wrangler.jsonc` must stay `jmoore` (matches
-the name Cloudflare derives from the `JMoore` repo) or git builds break. `.assetsignore`
-keeps CLAUDE.md and config files out of the served site.
+Assets-only static site, no build step. Cloudflare Worker **jmoore** — **LIVE at
+https://jmoore.net since July 29 2026** (HTTP/2, Cloudflare cert). Preview URL:
+https://jmoore.jordan-c-moore.workers.dev. The custom domain is declared in `wrangler.jsonc`
+`routes` (`{pattern:"jmoore.net", custom_domain:true}`); `workers_dev:true` keeps the
+preview URL alive. The Worker name must stay `jmoore` (matches the name Cloudflare derives
+from the `JMoore` repo) or git builds break. `.assetsignore` keeps CLAUDE.md, config,
+`.wrangler/`, and `*.HEIC` out of the served site.
+
+**The first deploy was manual** via `npx wrangler deploy`, run from a git-export in the
+scratchpad because Controlled Folder Access blocks node/wrangler from writing inside
+`Documents` (see local dev notes for the recipe). **Push-to-deploy (Workers Builds) is not
+yet connected** — that's the last step to match the racing sites (see Status).
 
 GitHub repo: **`jordancmoore-create/JMoore`** (https://github.com/jordancmoore-create/JMoore),
 branch `main`, empty build command.
@@ -26,10 +33,12 @@ branch `main`, empty build command.
    `Jordan.HEIC` with ffmpeg and stripped of EXIF/GPS. The `.HEIC` source is git-ignored
    (browsers can't render HEIC; keep the local original, commit only the JPEG).
 2. **GitHub repo** — created; remote wired; initial push done from this machine.
-3. **Workers Builds** — Cloudflare dashboard → Workers & Pages → import `JMoore`, root dir =
-   repo root, build command empty. (Or first-deploy manually: `npx wrangler deploy`.)
-4. **Custom domain** — attach `jmoore.net` (+ optional `www`) to the Worker. Zone is already
-   on the account.
+3. **Custom domain** — DONE. `jmoore.net` (apex) attached via wrangler.jsonc `routes`.
+   `www.jmoore.net` NOT set up (optional: add as a second `custom_domain` route).
+4. **Workers Builds (push-to-deploy)** — TODO (user, dashboard). Worker `jmoore` already
+   exists, so: Worker → Settings → Builds → Connect Git → `jordancmoore-create/JMoore`,
+   branch `main`, build command empty. Until then, redeploy with the scratchpad
+   `git archive` → `wrangler deploy` recipe in local dev notes.
 5. **hello@jmoore.net** — DONE. Cloudflare Email Routing forwards to Gmail; the site's
    `mailto:` uses hello@jmoore.net.
 
