@@ -1,0 +1,12 @@
+{
+  // Worker name — must match the name Cloudflare derives when you import the repo
+  // into Workers Builds, or git builds will fail. The GitHub repo is "JMoore",
+  // which Cloudflare lowercases to "jmoore". Site also gets a
+  // jmoore.<account>.workers.dev preview URL.
+  "name": "jmoore",
+  "compatibility_date": "2026-07-29",
+  // Assets-only Worker: no "main" script, just serve the static files in this folder.
+  "assets": {
+    "directory": "./"
+  }
+}

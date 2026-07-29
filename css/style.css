@@ -1,0 +1,161 @@
+/* ============================================================
+   jmoore.net — personal site
+   Minimalist, photo-first. Warm sand canvas, muted forest-green
+   accent. Fraunces (name) + Inter (small text). Light by default,
+   dark via prefers-color-scheme.
+   ============================================================ */
+
+:root {
+  --bg: #f4f1e9;          /* warm sand */
+  --bg-elev: #fbfaf6;
+  --text: #23281f;        /* deep forest ink */
+  --muted: #6d7266;       /* sage-gray */
+  --line: rgba(35, 40, 31, 0.14);
+  --accent: #5c7a52;      /* muted forest green */
+  --accent-strong: #47603f;
+
+  --radius: 16px;
+  --maxw: 520px;
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14170f;        /* deep olive-charcoal */
+    --bg-elev: #1b1f16;
+    --text: #ece9dd;      /* warm bone */
+    --muted: #9aa08c;
+    --line: rgba(255, 255, 255, 0.12);
+    --accent: #9bb884;    /* soft sage for dark bg */
+    --accent-strong: #b3cd9c;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.25rem;
+  font-family: var(--font-body);
+  color: var(--text);
+  background:
+    radial-gradient(70rem 48rem at 50% -18%,
+      color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%),
+    var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- Centered stage ---------- */
+.stage {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 1.35rem;
+  width: 100%;
+  max-width: var(--maxw);
+}
+
+/* ---------- Portrait (the centerpiece) ---------- */
+.portrait {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+.portrait img {
+  width: auto;
+  height: auto;
+  max-width: min(86vw, 380px);
+  max-height: 68vh;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--bg-elev);
+  box-shadow:
+    0 24px 50px -26px rgba(20, 23, 15, 0.55),
+    0 8px 18px -12px rgba(20, 23, 15, 0.40);
+  display: block;
+}
+
+/* ---------- Name + accent rule ---------- */
+.name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2rem, 7vw, 3rem);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.rule {
+  width: 52px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+.tagline {
+  margin: -0.4rem 0 0;
+  max-width: 34ch;
+  color: var(--muted);
+  font-size: 1.02rem;
+}
+
+/* ---------- Links ---------- */
+.links {
+  display: flex;
+  gap: 1.6rem;
+  align-items: center;
+}
+.links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.98rem;
+  font-weight: 500;
+  transition: color 0.18s ease;
+}
+.links a:hover { color: var(--accent-strong); }
+.links a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+.links .ico { width: 19px; height: 19px; fill: currentColor; }
+
+/* ---------- Footer ---------- */
+.foot {
+  position: fixed;
+  bottom: 1rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* ---------- Entrance motion ---------- */
+.stage > * { opacity: 0; transform: translateY(12px); }
+body.is-loaded .stage > * {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+body.is-loaded .portrait { transition-delay: 0.04s; }
+body.is-loaded .name     { transition-delay: 0.18s; }
+body.is-loaded .rule     { transition-delay: 0.26s; }
+body.is-loaded .tagline  { transition-delay: 0.30s; }
+body.is-loaded .links    { transition-delay: 0.36s; }
+
+.foot { opacity: 0; }
+body.is-loaded .foot { opacity: 0.7; transition: opacity 0.8s ease 0.5s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .stage > *, .foot { opacity: 1 !important; transform: none !important; }
+  * { transition: none !important; }
+}

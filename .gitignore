@@ -1,0 +1,9 @@
+.DS_Store
+Thumbs.db
+desktop.ini
+node_modules/
+.claude/settings.local.json
+
+# Source photos (converted to optimized web JPEGs before committing)
+*.HEIC
+*.heic

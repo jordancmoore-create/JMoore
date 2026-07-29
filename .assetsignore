@@ -1,0 +1,6 @@
+CLAUDE.md
+wrangler.jsonc
+.assetsignore
+.gitignore
+.gitattributes
+.claude/
