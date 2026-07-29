@@ -5,6 +5,10 @@
   // jmoore.<account>.workers.dev preview URL.
   "name": "jmoore",
   "compatibility_date": "2026-07-29",
+  // Keep the jmoore.<account>.workers.dev preview URL alive alongside the custom
+  // domain (adding routes disables it by default).
+  "workers_dev": true,
+  "preview_urls": true,
   // Assets-only Worker: no "main" script, just serve the static files in this folder.
   "assets": {
     "directory": "./"
